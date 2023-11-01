@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Search</h1>
+<form action="{% url 'blog:search' %}" method="get" validate>
+<label for="search">Search this site</label>
+<input type="text" name="search" id="search" value="{{request.GET.search}}" autofocus /><br />
+<input type="submit" value="submit" name="submit" />
+</form>
+
+{% if submitbutton == "submit" and request.GET.search != '' %}
+
+<h2>Search Results</h2>
+{% if songs %}
+{% for song in songs %}
+<h3>{{song.title}}</h3>
+On {{song.release_date}}<br />
+<a href="{{song.get_absolute_url}}">{{song.title}}</a>
+{% endfor %}
+{% else %}
+<p>No results matching your search query</p>
+{% endif %}
+{% endif %}
+{% endblock content %}

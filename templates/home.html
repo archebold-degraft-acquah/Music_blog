@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{%block title%}
+{{title}}
+{%endblock%}
+
+{%block content%}
+<div>
+<h2>Browse Songs</h2>
+<p>This is a quick navigation to a particular section on the page.</p>
+<a href="#genre">Genre</a><br />
+<a href="#artist">Artist</a><br />
+<a href="#albums">Albums</a><br />
+<a href="#songs">Songs</a>
+<h2 id="genre">Genre</h2>
+{% if genres %}
+<p>Click on a genre to jump to that particular genre and view all songs under it.</p>
+{% for genre in genres %}
+<a href="#{{genre.name}}{{genre.id}}">{{genre.name}}s</a><br />
+{% endfor %}
+
+{% for genre in genres %}
+<h3 id="{{genre.name}}{{genre.id}}">{{genre.name}}s</h3>
+<p>Browse all {{genre.name}} songs</p>
+{% for song in genre.song_set.all %}
+<a href="{{song.get_absolute_url}}">{{song.title}}</a>
+{% endfor %}
+{% endfor %}
+{% else %}
+<p>Nothing available yet. Coming soon.</p>
+{% endif %}
+
+
+{% if artists %}
+<h2 id="artist">Artist</h2>
+<p>You can also browse songs by artist</p>
+{% for artist in artists %}
+<a href="#{{artist.name}}{{artist.id}}">{{artist.name}}</a>
+{% endfor %}
+
+{% for artist in artists %}
+<h3 id="{{artist.name}}{{artist.id}}">{{artist.name}} songs</h3>
+<p>Browse all songs by {{artist.name}}</p>
+{% for song in artist.song_set.all %}
+<h4>{{song.title}}</h4>
+<strong>by</strong><br />
+{{song.artist}}<br />
+<a href="{{song.get_absolute_url}}">Listen to {{song.title}}</a>
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+{% if albums %}
+<h2 id="albums">Albums</h2>
+<p>Click on an album to view its songs</p>
+{% for album in albums %}
+<a href="#{{album.name}}{{album.id}}">{{album.name}}</a>
+{% endfor %}
+
+{% for album in albums %}
+<h3 id="{{album.name}}{{album.id}}"> songs in {{album.name}}</h3>
+{% for song in album.song_set.all %}
+<h4>{{song.title}}</h4>
+By {{song.artist}}<br />
+released on {{song.release_date}}<br />
+<a href="{{song.get_absolute_url}}">Listen to and download song</a>
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+{% if songs %}
+<h2 id="songs">Songs</h2>
+{% for song in songs %}
+<h3 id="{{song.title}}{{song.id}}">{{song.title}}</h3>
+<p>By {{song.artist}}</p>
+<p>released on {{song.release_date}}</p>
+<p class="editor-note">{% if song.description %}{{song.description}} {% endif %}</p>
+<a href="{{song.get_absolute_url}}">listen to and download {{song.title}}</a>
+{% endfor %}
+{% endif %}
+{% endblock %}

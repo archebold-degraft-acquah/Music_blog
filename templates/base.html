@@ -1,0 +1,85 @@
+{% load flatpages %}
+{% get_flatpages as pages %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}{% if title %}{{title}}{% endif %}{% endblock %} |Entertainment hipe GH</title>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+<style>
+audio {
+background-image: url({% static 'images/music-player-interface' %});
+background-repeat: repeat;
+}
+</style>
+</head>
+<body>
+<header>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a href="#skip">Skip navigation</a>
+<a href="{% url 'blog:subscribe' %}">Subscribe to push notification</a>
+<a class="nav-link" href="{% url 'blog:search' %}">Search</a>
+<div class="container">
+<a class="navbar-brand" href="{% url 'blog:home' %}"><img src="{% static 'images/home1.jpg' %}" alt="Home page" /></a>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav ml-auto">
+<li class="nav-item">
+<a class="nav-link" href="{% url 'blog:home' %}">Home</a>
+</li>
+<li class="nav-item">
+{% for page in pages %}
+<a class="nav-link" href="/pages{{ page.url }}">{{page.title}}</a>
+{% endfor %}
+</li>
+</ul>
+
+</div>
+</div>
+</nav>
+{% if messages %}
+<div class="messages">
+{% for message in messages %}
+<div class="alert {% if message.tags %}alert-{{message.tags}}{% endif %}">
+{{message}}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+</header>
+
+<main>
+<div class="container mt-4">
+<div class="row">
+<div class="col-md-6">
+<div class="card mb-4">
+<div class="card-body">
+{% block content %}
+{% endblock %}
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="feedback">
+<aside>
+<div class="card">Your feedback is important</div>
+<div class="card-body">
+<a href="{% url 'blog:contact' %}" class="btn btn-primary">Send us a feedback</a>
+</div>
+</aside>
+</div>
+<footer class="bg-dark text-white text-center py-3">
+<p>&copy; 2021 Music Blog. All rights reserved.</p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
